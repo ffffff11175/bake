@@ -1,0 +1,15 @@
+database:
+  host: localhost
+  port: 3306
+  user: root
+  password: your_secure_password
+  name: my_app_database
+
+output_dir: ./internal/models
+package_name: models
+
+# 可选：只生成指定的表
+tables:
+  - users
+  - orders
+  - products

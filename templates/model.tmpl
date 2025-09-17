@@ -1,0 +1,17 @@
+package {{.PackageName}}
+
+import (
+	{{if .HasTimeFields}}"time"{{end}}
+)
+
+// {{.StructName}} represents a row from the '{{.TableName}}' table.
+type {{.StructName}} struct {
+	{{range .Columns}}
+	{{.GoName}} {{.GoType}} `db:"{{.DBName}}" json:"{{.DBName}}"` // {{.Comment}}
+	{{end}}
+}
+
+// TableName returns the name of the table.
+func ({{.StructName}}) TableName() string {
+	return "{{.TableName}}"
+}
