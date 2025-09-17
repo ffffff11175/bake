@@ -77,10 +77,10 @@ func main() {
 				Usage:   "Specific tables to generate (default: all tables)",
 			},
 			&cli.BoolFlag{
-				Name:    "verbose",
-				Aliases: []string{"v"},
-				Value:   false,
-				Usage:   "Verbose output",
+				Name: "verbose",
+				//Aliases: []string{"v"},
+				Value: false,
+				Usage: "Verbose output",
 			},
 		},
 		Action: func(c *cli.Context) error {
@@ -142,10 +142,6 @@ func generateModels(c *cli.Context) error {
 		return fmt.Errorf("error creating output directory: %v", err)
 	}
 
-	if err := generator.GeneratePackageFile(finalConfig.OutputDir, finalConfig.PackageName); err != nil {
-		return fmt.Errorf("error generating package file: %v", err)
-	}
-
 	for _, table := range tables {
 		err := generator.GenerateModelFile(tmpl, finalConfig.OutputDir, finalConfig.PackageName, table)
 		if err != nil {
@@ -153,8 +149,8 @@ func generateModels(c *cli.Context) error {
 		} else if c.Bool("verbose") {
 			log.Printf("Generated model for table: %s", table.Name)
 		}
+		log.Printf("Successfully generated %d model files in %s Table:%s", len(tables), finalConfig.OutputDir, table.Name)
 	}
 
-	log.Printf("Successfully generated %d model files in %s", len(tables), finalConfig.OutputDir)
 	return nil
 }

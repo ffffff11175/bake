@@ -8,10 +8,8 @@ import (
 )
 
 func LoadTemplate(templatePath string) (*template.Template, error) {
-
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
-		// 如果不存在，使用内置默认模板
-		return template.New("model").Parse(defaultTemplate)
+		return nil, err
 	}
 
 	tmpl, err := template.New(filepath.Base(templatePath)).ParseFiles(templatePath)
@@ -48,22 +46,3 @@ func MapSQLTypeToGoType(sqlType string, nullable bool) string {
 
 	return goType
 }
-
-// 默认模板内容
-const defaultTemplate = `package {{.PackageName}}
-
-import (
-	{{if .HasTimeFields}}"time"{{end}}
-)
-
-// {{.StructName}} represents a row from the '{{.TableName}}' table.
-type {{.StructName}} struct {
-	{{range .Columns}}
-	{{.GoName}} {{.GoType}} ` + "`db:\"{{.DBName}}\" json:\"{{.DBName}}\"`" + ` // {{.Comment}}
-	{{end}}
-}
-
-// TableName returns the name of the table.
-func ({{.StructName}}) TableName() string {
-	return "{{.TableName}}"
-}`
